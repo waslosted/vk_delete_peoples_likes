@@ -1,0 +1,5 @@
+{
+	"link": "LINK", 
+	"login": "LOGIN", 
+	"password": "PASSWORD"
+}
