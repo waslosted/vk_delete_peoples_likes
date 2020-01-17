@@ -9,6 +9,9 @@ pip install -r requirements.txt
 ```
 ## Usage
   Change data.txt and run
+  ```bash
+py main.py
+```
   
 
 HF
