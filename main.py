@@ -69,46 +69,27 @@ def get_token(username, password):
     except ConnectionError as err:
         print("Connection error")
 
-
 def get_data_from_link(link_to_search):
     try:
-        res = re.findall('(?:[0-9])+', link_to_search)
-        owner_id = res[0]
-
-        # for POST req delete like
-        res = re.findall('wall(?:[0-9]|[_]+)+', link_to_search)
-        wall_link_object = res[0]
-
-        res = link_to_search.split('_')
-        item_id = res[1]
-        return owner_id, item_id, wall_link_object
+        base = (re.findall('wall(.+)_(\\d+)', link_to_search))
+    except IndexError as e:
+        logging.error(f"Invalid url! {e}")
     except Exception as e:
-        print(e)
-
+        logging.error(e)
+    else:
+        return base
 
 def read_data():
+    data = {}
     try:
-        with open('data.txt') as json_file:
+        with open('data.txt', 'r+') as json_file:
             data = json.load(json_file)
-
-        username = data['login']
-        password = data['password']
-        link = data['link']
-
-        if 'token' not in data:
-            token = get_token(username, password)
-            data['token'] = token
-
-        with open('data.txt', 'w') as json_file:
-            json.dump(data, json_file)
         return data
-
     except KeyError as e:
         if e.args[0] in ['link', 'login', 'password', 'token']:
-            print(f'Cannot find: {e.args[0]}')
-
+            logging.info(f'Cannot find: {e.args[0]}')
     except IOError as e:
-        print(e)
+        logging.info(e))
 
 
 def main():
@@ -116,32 +97,29 @@ def main():
 
     link, username, password, token = [key for key in hole_data.values()]
 
-    owner_id, item_id, wall_link_object = get_data_from_link(link)
+    owner_id, item_id = get_data_from_link(link)
 
     user = User(username, password, link, token)
     print(f'Ur VK token:{user.token}', end='\n\n')
     user.login()
-
-    sys.exit()
-
-	// ill fix shit down below
+		  
     users = None
     while True:
         try:
             req_likes = requests.get(
                 f'https://api.vk.com/method/likes.getList?access_token={token}&type=post&owner_id={owner_id}&item_id={item_id}&v=5.103').json()
             print(req_likes)
+
             if req_likes['response']['count'] != 0:
                 users = req_likes['response']['items']
 
         except Exception as e:
-            print('except')
-            if req_likes['error']:
-                print('Shit happend')
+	    print(e)
+            if 'error_msg' in req_likes:
                 print(req_likes['error']['error_msg'])
 
-        if users != None:
-            for user in users:
+        #if users != None:
+		for user in users:
                 data = {
                     'act': 'spam',
                     'al': '1',
@@ -160,7 +138,7 @@ def main():
                     'al': '1',
                     'hash': user_hash,
                     'mid': user,
-                    'object': wall_full_link
+                    'object': 'wall' + str(user)
                 }
 
                 r = session.post('https://vk.com/like.php', data=data)
@@ -170,27 +148,10 @@ def main():
                     f'https://api.vk.com/method/account.unban?access_token={token}&owner_id={user}&v=5.103').json()
                 print(r)
                 time.sleep(0.5)
-            users = None
+            #users = None
 
         time.sleep(2)
 
 
-def get_id():
-    if 'nt' in os.name:
-        return os.popen("wmic diskdrive get serialnumber").read().split()[-1]
-    else:
-        return os.popen("hdparm -I /dev/sda | grep 'Serial Number'").read().split()[-1]
-
-
 if __name__ == '__main__':
-    user_id = get_id()
-	print(user_id)
-	# You can use github gist
-    data = requests.get('UR page with hwids')
-
-    if user_id in data.text:
-        print('Authenticated!')
-        main()
-        auth = True
-    else:
-        print('User' + ' was not found on the server.\nNot authorised!')
+    main()
