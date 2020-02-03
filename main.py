@@ -118,8 +118,8 @@ def main():
             if 'error_msg' in req_likes:
                 print(req_likes['error']['error_msg'])
 
-        #if users != None:
-		for user in users:
+       
+	for user in users:
                 data = {
                     'act': 'spam',
                     'al': '1',
@@ -147,10 +147,9 @@ def main():
                 r = requests.get(
                     f'https://api.vk.com/method/account.unban?access_token={token}&owner_id={user}&v=5.103').json()
                 print(r)
-                time.sleep(0.5)
-            #users = None
+                time.sleep(0.2)
 
-        time.sleep(2)
+        time.sleep(1)
 
 
 if __name__ == '__main__':
