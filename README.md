@@ -16,7 +16,7 @@ pip install -r requirements.txt
 }```
 
 
-  ```bash
+  ```
 py main.py
 ```
   
