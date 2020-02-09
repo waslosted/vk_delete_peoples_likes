@@ -9,11 +9,13 @@ pip install -r requirements.txt
 ```
 ## Usage
   Change data.txt and run
-  ```{
+  ```
+  {
 	"link": "LINK", 
 	"login": "LOGIN", 
 	"password": "PASSWORD"
-}```
+}
+```
 
 
   ```
