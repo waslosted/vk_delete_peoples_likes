@@ -42,9 +42,9 @@ class User:
             userName = soup.select('a[class=op_owner]')
 
             if not userName:
-                raise BaseException
+                raise KeyError
 
-        except (Exception, BaseException) as e:
+        except (KeyError, BaseException) as e:
             print("Shit happend. Login fail.")
         else:
             print(f'Successfully login as: {userName[0]["data-name"]}')
