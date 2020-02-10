@@ -2,10 +2,8 @@ import re
 import requests
 import time
 import json
-import pprint
 import sys
 from bs4 import BeautifulSoup as BS
-import os
 
 
 class User:
@@ -89,7 +87,7 @@ def read_data():
         if e.args[0] in ['link', 'login', 'password', 'token']:
             logging.info(f'Cannot find: {e.args[0]}')
     except IOError as e:
-        logging.info(e))
+        logging.info(e)
 
 
 def main():
