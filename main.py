@@ -53,7 +53,7 @@ class User:
         return "User('{}', '{}', '{}', '{}')".format(self.username, self.password, self.post_link, self.token)
 
     def __str__(self):
-        pass
+        return '{} - {} - {} - {}'.format(self.username, self.password, self.post_link, self.token)
 
 
 def get_token(username, password):
