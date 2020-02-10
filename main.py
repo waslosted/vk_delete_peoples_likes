@@ -48,6 +48,12 @@ class User:
             print("Shit happend. Login fail.")
         else:
             print(f'Successfully login as: {userName[0]["data-name"]}')
+		  
+    def __repr__(self):
+        return "User('{}', '{}', '{}', '{}')".format(self.username, self.password, self.post_link, self.token)
+
+    def __str__(self):
+        pass
 
 
 def get_token(username, password):
